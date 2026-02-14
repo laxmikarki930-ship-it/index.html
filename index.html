@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question From My Heart ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root { --love: #d00000; --soft: #fff0f3; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--soft); color: #333; overflow-x: hidden; }
+        
+        .container { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; transition: 1s; }
+        
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--love); margin-bottom: 10px; }
+        p { font-size: 1.2rem; max-width: 600px; line-height: 1.6; }
+
+        .big-question { display: none; }
+        
+        .btn-container { margin-top: 30px; position: relative; height: 150px; width: 100%; }
+        .btn {
+            padding: 15px 40px; font-size: 1.3rem; border-radius: 50px;
+            border: none; cursor: pointer; position: absolute; font-weight: bold; transition: 0.3s;
+        }
+        #yesBtn { background: var(--love); color: white; left: 50%; transform: translateX(-115%); z-index: 100; }
+        #noBtn { background: #555; color: white; left: 50%; transform: translateX(15%); }
+
+        .heart-loader { color: var(--love); font-size: 50px; animation: beat 1s infinite; margin-bottom: 20px; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+        #success { display: none; }
+        .success-content img { width: 250px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div style="position:absolute; top:-9999px;"><div id="player"></div></div>
+
+    <div id="step1" class="container">
+        <div class="heart-loader">❤️</div>
+        <h1>Before you go...</h1>
+        <p>I spent a long time thinking about how to say this, but I think it's better if I just ask.</p>
+        <button class="btn" style="position:relative; left:auto; transform:none;" onclick="showQuestion()">Click to see...</button>
+    </div>
+
+    <div id="step2" class="container big-question">
+        <h1>Will you be my girlfriend?</h1>
+        <p>You make every day better just by being in it.</p>
+        
+        <div class="btn-container">
+            <button id="yesBtn" class="btn" onclick="celebrate()">YES! ❤️</button>
+            <button id="noBtn" class="btn" onmouseover="dodge()" onclick="dodge()">No</button>
+        </div>
+    </div>
+
+    <div id="success" class="container">
+        <div class="success-content">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHR0cXZyZ3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpsWZCZpNLXpA8/giphy.gif">
+            <h1>Officially Yours! 😍</h1>
+            <p>You've made me the happiest guy alive. <br> I'll see you later tonight, my girlfriend! ❤️</p>
+        </div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0', width: '0', videoId: 'D-YDEyuDx_E',
+                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'D-YDEyuDx_E' }
+            });
+        }
+
+        function showQuestion() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'flex';
+            if(player) { player.playVideo(); } // Music starts when she clicks
+        }
+
+        function dodge() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function celebrate() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('success').style.display = 'flex';
+            
+            const duration = 15 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                const particleCount = 50 * (timeLeft / duration);
+                confetti({...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }});
+                confetti({...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }});
+            }, 250);
+        }
+    </script>
+</body>
+</html>
